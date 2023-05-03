@@ -7,10 +7,9 @@ FFT 알고리즘은 여러 가지 방법으로 구현될 수 있습니다. 여�
 2. 각 부분에 대해 재귀적으로 FFT를 계산합니다. 
 3. 계산된 FFT를 조합하여 전체 FFT를 계산합니다. 
 
-여기서는 Java 언어를 사용하여 FFT 알고리즘을 구현해보겠습니다.
+현재 배우고 있는 언어가 java이므로 java로 FFT알고리즘을 구현해보겠습니다.
 public class FFT {
 
-    // 복소수 클래스
     static class Complex {
         double real, imag;
 
@@ -31,8 +30,7 @@ public class FFT {
             return new Complex(real * c.real - imag * c.imag, real * c.imag + imag * c.real);
         }
     }
-
-    // FFT 계산 함수
+    
     public static Complex[] fft(Complex[] a, int n) {
         if (n == 1) return new Complex[] { a[0] };
 
@@ -58,15 +56,18 @@ public class FFT {
     }
 
     public static void main(String[] args) {
-        // 테스트용 입력 데이터
         Complex[] a = { new Complex(1, 0), new Complex(2, 0), new Complex(3, 0), new Complex(4, 0) };
-
-        // FFT 계산
+        
         Complex[] y = fft(a, a.length);
 
-        // 결과 출력
         for (Complex c : y) {
             System.out.println(c.real + " + " + c.imag + "i");
         }
     }
 }
+
+다음은 실행결과입니다.
+10.0 + 0.0i
+-2.0 + -2.0i
+-2.0 + 0.0i
+-1.9999999999999998 + 2.0i
