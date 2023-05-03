@@ -8,3 +8,65 @@ FFT 알고리즘은 여러 가지 방법으로 구현될 수 있습니다. 여�
 3. 계산된 FFT를 조합하여 전체 FFT를 계산합니다. 
 
 여기서는 Java 언어를 사용하여 FFT 알고리즘을 구현해보겠습니다.
+public class FFT {
+
+    // 복소수 클래스
+    static class Complex {
+        double real, imag;
+
+        public Complex(double real, double imag) {
+            this.real = real;
+            this.imag = imag;
+        }
+
+        public Complex add(Complex c) {
+            return new Complex(real + c.real, imag + c.imag);
+        }
+
+        public Complex sub(Complex c) {
+            return new Complex(real - c.real, imag - c.imag);
+        }
+
+        public Complex mul(Complex c) {
+            return new Complex(real * c.real - imag * c.imag, real * c.imag + imag * c.real);
+        }
+    }
+
+    // FFT 계산 함수
+    public static Complex[] fft(Complex[] a, int n) {
+        if (n == 1) return new Complex[] { a[0] };
+
+        Complex[] even = new Complex[n / 2];
+        Complex[] odd = new Complex[n / 2];
+
+        for (int i = 0; i < n / 2; i++) {
+            even[i] = a[2 * i];
+            odd[i] = a[2 * i + 1];
+        }
+
+        Complex[] q = fft(even, n / 2);
+        Complex[] r = fft(odd, n / 2);
+
+        Complex[] y = new Complex[n];
+        for (int k = 0; k < n / 2; k++) {
+            Complex w = new Complex(Math.cos(2 * Math.PI * k / n), Math.sin(2 * Math.PI * k / n));
+            y[k] = q[k].add(w.mul(r[k]));
+            y[k + n / 2] = q[k].sub(w.mul(r[k]));
+        }
+
+        return y;
+    }
+
+    public static void main(String[] args) {
+        // 테스트용 입력 데이터
+        Complex[] a = { new Complex(1, 0), new Complex(2, 0), new Complex(3, 0), new Complex(4, 0) };
+
+        // FFT 계산
+        Complex[] y = fft(a, a.length);
+
+        // 결과 출력
+        for (Complex c : y) {
+            System.out.println(c.real + " + " + c.imag + "i");
+        }
+    }
+}
